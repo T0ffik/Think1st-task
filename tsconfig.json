@@ -20,9 +20,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "paths": {
-      // add aliases to folders
-    }
+    "types": ["vite-plugin-svgr/client"]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

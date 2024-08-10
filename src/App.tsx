@@ -1,6 +1,4 @@
-import { CTA } from "./components/atoms/CTA/CTA";
-import { Textfield } from "./components/atoms/Textfield/Textfield";
-import { TimeSlots } from "./components/atoms/TimeSlots/TimeSlots";
+import { TimeSlots, Textfield, CTA, DeteleIcon } from "./components";
 import "./input.css";
 
 function App() {
@@ -9,6 +7,7 @@ function App() {
       <Textfield label="sasa" value="dsad" />
       <CTA>Send Application</CTA>
       <TimeSlots />
+      <DeteleIcon />
     </div>
   );
 }
