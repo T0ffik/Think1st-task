@@ -4,7 +4,7 @@ import {
   CTA,
   DeteleIcon,
   RangeInput,
-  ValueIndicator,
+  Calendar,
 } from "./components";
 import "./input.css";
 
@@ -16,6 +16,7 @@ function App() {
       <TimeSlots />
       <DeteleIcon />
       <RangeInput />
+      <Calendar />
     </div>
   );
 }

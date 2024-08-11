@@ -15,6 +15,7 @@ export default {
       "cText-secondary": "#FFFFFF",
       "cIcon-default": "#000853",
       "cIcon-hover": "#ED4545",
+      "cBackgroun-white": "#FFFFFF",
     },
     fontSize: {
       fsExtraBig: "24px",
