@@ -1,4 +1,11 @@
-import { TimeSlots, Textfield, CTA, DeteleIcon } from "./components";
+import {
+  TimeSlots,
+  Textfield,
+  CTA,
+  DeteleIcon,
+  RangeInput,
+  ValueIndicator,
+} from "./components";
 import "./input.css";
 
 function App() {
@@ -8,6 +15,7 @@ function App() {
       <CTA>Send Application</CTA>
       <TimeSlots />
       <DeteleIcon />
+      <RangeInput />
     </div>
   );
 }
