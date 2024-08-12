@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import left_arrow from "../../../images/Left_Arrow.png";
 import right_arrow from "../../../images/Right_Arrow.png";
+import { FormValues } from "../../organism";
+import { DateType } from "../../molecules";
 const days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 const getAllDaysForMonth = (month: number, year: number) => {
   const date = new Date(year, month, 1);
@@ -34,7 +36,12 @@ const getAllDaysForMonth = (month: number, year: number) => {
   return array;
 };
 
-export const Calendar = () => {
+type CalendarProps = {
+  value: DateType;
+  setValue: Dispatch<SetStateAction<DateType>>;
+};
+
+export const Calendar = ({ value, setValue }: CalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const daysofMonth = getAllDaysForMonth(
     currentMonth.getMonth(),
@@ -68,7 +75,10 @@ export const Calendar = () => {
         </div>
         <div className="flex justify-between mt-[32px]">
           {days.map((day) => (
-            <span className="text-fsSmall font-medium w-[39.42px] text-center">
+            <span
+              key={day}
+              className="text-fsSmall font-medium w-[39.42px] text-center"
+            >
               {day}
             </span>
           ))}
@@ -81,7 +91,17 @@ export const Calendar = () => {
                   return <span className="w-[39.42px] text-center"></span>;
                 }
                 return (
-                  <span className="w-[39.42px] text-center text-fsMedium font-normal">
+                  <span
+                    className="w-[39.42px] text-center text-fsMedium font-normal cursor-pointer"
+                    key={day.getDate()}
+                    onClick={() =>
+                      setValue({
+                        day: day.getDate(),
+                        month: day.getMonth(),
+                        year: day.getFullYear(),
+                      })
+                    }
+                  >
                     {day.getDate()}
                   </span>
                 );

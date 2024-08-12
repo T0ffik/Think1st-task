@@ -11,6 +11,7 @@ body{
   align-items: center;
   font-family: "Inter", sans-serif;
   padding-top: 120px;
+  color: #000853;
 }
 input:focus {
     outline: none;

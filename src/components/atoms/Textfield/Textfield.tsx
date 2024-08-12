@@ -1,11 +1,21 @@
-import { useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { FormValues } from "../../organism";
 
 type TextfieldProps = {
+  name: string;
   label: string;
   value: string;
+  type?: "email";
+  setValue: Dispatch<SetStateAction<FormValues>>;
 };
 
-export const Textfield = ({ label }: TextfieldProps) => {
+export const Textfield = ({
+  label,
+  type,
+  setValue,
+  name,
+  value,
+}: TextfieldProps) => {
   const [state, setState] = useState<"default" | "focus" | "error">("default");
   const defaultStyles = "border-[1px] border-cBorder-default";
   const errorStyles = "bg-cFiled-error border-[2px] border-cBorder-error";
@@ -26,6 +36,13 @@ export const Textfield = ({ label }: TextfieldProps) => {
     <div className=" flex flex-col min-w-[287px]">
       <label>{label}</label>
       <input
+        type={type}
+        name={name}
+        onChange={(e) => {
+          const newValue = e.currentTarget.value;
+          setValue((prev) => ({ ...prev, [name]: newValue }));
+        }}
+        value={value}
         onFocus={() => setState("focus")}
         onBlur={() => setState("default")}
         className={

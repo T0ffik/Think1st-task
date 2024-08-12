@@ -3,7 +3,7 @@ import "./input.css";
 
 function App() {
   return (
-    <div className="flex flex-col items-center h-[100vh]">
+    <div className="flex flex-col items-center">
       <Form />
     </div>
   );
