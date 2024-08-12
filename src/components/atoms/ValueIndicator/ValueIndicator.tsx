@@ -7,7 +7,7 @@ type ValueIndicatorProps = {
 export const ValueIndicator = ({ value }: ValueIndicatorProps) => {
   return (
     <div
-      className={`bg-[url('/indicator.png')] w-[37px] h-[31px] text-center pt-[6px] absolute ${
+      className={`bg-[url('/indicator.png')] w-[37px] h-[31px] text-center pt-[6px] absolute text-cBorder-active ${
         positions[Number(value) - 8]
       }`}
     >

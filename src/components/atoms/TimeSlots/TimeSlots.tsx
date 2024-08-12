@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-export const TimeSlots = () => {
+type TimeSlotsProps = {
+  value: string;
+};
+
+export const TimeSlots = ({ value }: TimeSlotsProps) => {
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const getStyles = () => {
     if (isSelected) {
@@ -12,9 +16,12 @@ export const TimeSlots = () => {
   return (
     <div
       onClick={() => setIsSelected((prev) => !prev)}
-      className={"rounded-[8px] cursor-pointer " + getStyles()}
+      className={
+        "rounded-[8px] cursor-pointer bg-cBackgroun-white w-[76px] h-[46px] flex justify-center items-center " +
+        getStyles()
+      }
     >
-      TimeSlots
+      {value}
     </div>
   );
 };

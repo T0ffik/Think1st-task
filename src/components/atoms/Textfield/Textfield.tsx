@@ -29,7 +29,7 @@ export const Textfield = ({ label }: TextfieldProps) => {
         onFocus={() => setState("focus")}
         onBlur={() => setState("default")}
         className={
-          "rounded-[8px] py-[18px] px-[16px] text-fsMedium leading-[19.36px] " +
+          "rounded-[8px] py-[18px] px-[16px] h-[48px] text-fsMedium leading-[19.36px] " +
           getStyles()
         }
       />

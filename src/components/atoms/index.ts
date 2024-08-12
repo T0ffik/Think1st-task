@@ -5,3 +5,4 @@ export * from "./TimeSlots";
 export * from "./RangeInput";
 export * from "./ValueIndicator";
 export * from "./Calendar";
+export * from "./FileInput";

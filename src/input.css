@@ -9,6 +9,8 @@ body{
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: "Inter", sans-serif;
+  padding-top: 120px;
 }
 input:focus {
     outline: none;
