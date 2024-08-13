@@ -3,9 +3,21 @@ import { Calendar } from "../../atoms";
 import { TimePicker } from "../TimePicker";
 import { FormValues } from "../../organism";
 
+export type holidayType = "OBSERVANCE" | "NATIONAL_HOLIDAY" | "SEASON";
+
+export type holiday = {
+  country: string;
+  iso: string;
+  year: number;
+  date: string;
+  day: string;
+  name: string;
+  type: holidayType;
+};
+
 type DatePickerProps = {
-  value: Date | null;
   setValue: Dispatch<SetStateAction<FormValues>>;
+  holidays: holiday[] | null;
 };
 
 export type DateType = {
@@ -50,7 +62,7 @@ const getAllDaysForMonth = (month: number, year: number) => {
   return array;
 };
 
-export const DatePicker = ({ value, setValue }: DatePickerProps) => {
+export const DatePicker = ({ setValue, holidays }: DatePickerProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [isCurrentMonthDisplayed, setIsCurrentMonthDisplayed] = useState(true);
   const [date, setDate] = useState<DateType>({
@@ -86,6 +98,7 @@ export const DatePicker = ({ value, setValue }: DatePickerProps) => {
         daysofMonth={daysofMonth}
         isCurrentMonthDisplayed={isCurrentMonthDisplayed}
         setTime={setTime}
+        holidays={holidays}
       />
       {isDatePicked && isCurrentMonthDisplayed && (
         <TimePicker value={time} setValue={setTime} />

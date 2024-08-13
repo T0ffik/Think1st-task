@@ -13,6 +13,7 @@ export default {
       "cCta-hover": "#6A19CD",
       "cText-primary": "#000853",
       "cText-secondary": "#FFFFFF",
+      "cText-inactive": "#898DA9",
       "cIcon-default": "#000853",
       "cIcon-hover": "#ED4545",
       "cBackgroun-white": "#FFFFFF",

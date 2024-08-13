@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useCallback } from "react";
 import left_arrow from "../../../images/Left_Arrow.png";
 import right_arrow from "../../../images/Right_Arrow.png";
-import { DateType, TimeType } from "../../molecules";
+import { DateType, holiday, TimeType } from "../../molecules";
 const days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 
 type CalendarProps = {
@@ -12,6 +12,7 @@ type CalendarProps = {
   setValue: Dispatch<SetStateAction<DateType>>;
   setMonth: Dispatch<SetStateAction<Date>>;
   setTime: Dispatch<SetStateAction<TimeType>>;
+  holidays: holiday[] | null;
 };
 
 export const Calendar = ({
@@ -22,17 +23,65 @@ export const Calendar = ({
   month,
   daysofMonth,
   isCurrentMonthDisplayed,
+  holidays,
 }: CalendarProps) => {
   const setFocusedStyles = useCallback(
-    (day: number) => {
-      const isPickedDate = value.day === day;
-      if (isCurrentMonthDisplayed && isPickedDate) {
-        return "bg-cCta-default w-[24px] h-[24px] mx-[7.71px] rounded-[50%] text-cText-secondary";
+    (isPicked: boolean, isFreeDay: boolean) => {
+      if (isCurrentMonthDisplayed && isPicked) {
+        return "bg-cCta-default w-[24px] h-[24px] mx-[7.71px] rounded-[50%] text-cText-secondary cursor-pointer";
       }
-      return "";
+      if (isFreeDay) {
+        return "w-[39.42px] cursor-default text-cText-inactive";
+      }
+      return "w-[39.42px] cursor-pointer";
     },
-    [isCurrentMonthDisplayed, value]
+    [isCurrentMonthDisplayed]
   );
+  const renderDays = (day: Date) => {
+    if (day === null || day === undefined) {
+      return <span className="w-[39.42px] text-center"></span>;
+    }
+    const isPickedDate = value.day === day.getDate();
+    const currentHoliday = holidays?.find((holiday) => {
+      return (
+        new Date(holiday.date).toDateString() ===
+        new Date(
+          day.getFullYear(),
+          day.getMonth(),
+          day.getDate()
+        ).toDateString()
+      );
+    });
+    const isFreeDay =
+      currentHoliday?.type === "NATIONAL_HOLIDAY" || day.getDay() === 0;
+    const onClick = () => {
+      if (isFreeDay) {
+        return;
+      }
+      setTime({
+        hour: null,
+        minutes: null,
+      });
+      setValue({
+        day: day.getDate(),
+        month: day.getMonth(),
+        year: day.getFullYear(),
+      });
+    };
+    return (
+      <span
+        className={
+          "text-center text-fsMedium font-normal " +
+          setFocusedStyles(isPickedDate, isFreeDay)
+        }
+        key={day.getDate()}
+        onClick={onClick}
+      >
+        {day.getDate()}
+      </span>
+    );
+  };
+
   return (
     <div className="flex flex-col">
       Date
@@ -40,17 +89,17 @@ export const Calendar = ({
         <div className=" flex justify-between text-fsMedium font-medium">
           <img
             src={left_arrow}
-            className="h-[16px]"
+            className="h-[16px] cursor-pointer"
             onClick={() =>
               setMonth(
                 (prev) => new Date(prev.getFullYear(), prev.getMonth() - 1)
               )
             }
           />
-          {month.toLocaleString("en", { month: "long" })}
+          {month.toLocaleString("en", { month: "long" })} {month.getFullYear()}
           <img
             src={right_arrow}
-            className="h-[16px]"
+            className="h-[16px] cursor-pointer"
             onClick={() =>
               setMonth(
                 (prev) => new Date(prev.getFullYear(), prev.getMonth() + 1)
@@ -71,33 +120,7 @@ export const Calendar = ({
         <div className="flex flex-col">
           {daysofMonth.map((week) => (
             <div className="flex justify-between mt-[9px]">
-              {week.map((day) => {
-                if (day === null || day === undefined) {
-                  return <span className="w-[39.42px] text-center"></span>;
-                }
-                return (
-                  <span
-                    className={
-                      "w-[39.42px] text-center text-fsMedium font-normal cursor-pointer " +
-                      setFocusedStyles(day.getDate())
-                    }
-                    key={day.getDate()}
-                    onClick={() => {
-                      setTime({
-                        hour: null,
-                        minutes: null,
-                      });
-                      setValue({
-                        day: day.getDate(),
-                        month: day.getMonth(),
-                        year: day.getFullYear(),
-                      });
-                    }}
-                  >
-                    {day.getDate()}
-                  </span>
-                );
-              })}
+              {week.map((day) => renderDays(day))}
             </div>
           ))}
         </div>

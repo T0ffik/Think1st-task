@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CTA, FileInput, RangeInput, Textfield } from "../../atoms";
-import { DatePicker } from "../../molecules";
+import { DatePicker, holiday } from "../../molecules";
 
 export type FormValues = {
   firstName: string;
@@ -12,6 +12,7 @@ export type FormValues = {
 };
 
 export const Form = () => {
+  const [holidays, setHolidays] = useState<holiday[] | null>(null);
   const [formValues, setFormValues] = useState<FormValues>({
     firstName: "",
     lastName: "",
@@ -20,7 +21,17 @@ export const Form = () => {
     photo: "",
     date: null,
   });
-  console.log(formValues);
+
+  useEffect(() => {
+    fetch("https://api.api-ninjas.com/v1/holidays?country=PL&year=2024&type=", {
+      headers: {
+        "X-Api-Key": "8DX8eEe67njS1lbThFsdSw==rQQNpQ8PYbPZBjrx",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setHolidays(data))
+      .catch((error) => console.log(error));
+  }, []);
 
   return (
     <form
@@ -57,7 +68,7 @@ export const Form = () => {
       <h2 className="text-fsExtraBig font-medium text-cText-primary mt-[24px]">
         Your workout
       </h2>
-      <DatePicker value={formValues.date} setValue={setFormValues} />
+      <DatePicker setValue={setFormValues} holidays={holidays} />
       <CTA>Send Application</CTA>
     </form>
   );
