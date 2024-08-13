@@ -19,14 +19,16 @@ export const TimePicker = ({ value, setValue }: TimePickerProps) => {
   return (
     <div className="flex flex-col gap-[8px]">
       Time
-      {timeSlots.map((slot) => (
-        <TimeSlots
-          setValue={setValue}
-          currentValue={value}
-          value={slot}
-          key={`${slot.hour}:${slot.minutes || "00"}`}
-        />
-      ))}
+      {timeSlots.map((slot) => {
+        return (
+          <TimeSlots
+            setValue={setValue}
+            currentValue={value}
+            value={slot}
+            key={`${slot.hour}:${slot.minutes || "00"}`}
+          />
+        );
+      })}
     </div>
   );
 };

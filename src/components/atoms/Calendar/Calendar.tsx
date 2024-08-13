@@ -1,53 +1,38 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useCallback } from "react";
 import left_arrow from "../../../images/Left_Arrow.png";
 import right_arrow from "../../../images/Right_Arrow.png";
-import { FormValues } from "../../organism";
-import { DateType } from "../../molecules";
+import { DateType, TimeType } from "../../molecules";
 const days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
-const getAllDaysForMonth = (month: number, year: number) => {
-  const date = new Date(year, month, 1);
-  const days = [];
-  while (date.getMonth() === month) {
-    days.push(new Date(date));
-    date.setDate(date.getDate() + 1);
-  }
-  const array: [Date[]] = [[]];
-  let i = 0;
-  days.forEach((day, index) => {
-    const dayNumber = day.getDay() === 0 ? 6 : day.getDay() - 1;
-    if (i === 0 && array[i].length === 0) {
-      for (let j = 0; j < dayNumber; j++) {
-        //@ts-ignore
-        array[i].push(null);
-      }
-    }
-    array[i][dayNumber] = day;
-    if (dayNumber === 6) {
-      ++i;
-      array.push([]);
-    }
-    if (index + 1 === days.length && dayNumber !== 6) {
-      for (let j = dayNumber; j < 6; j++) {
-        //@ts-ignore
-        array[i].push(null);
-      }
-    }
-  });
-  return array;
-};
 
 type CalendarProps = {
   value: DateType;
+  month: Date;
+  daysofMonth: [Date[]];
+  isCurrentMonthDisplayed: boolean;
   setValue: Dispatch<SetStateAction<DateType>>;
+  setMonth: Dispatch<SetStateAction<Date>>;
+  setTime: Dispatch<SetStateAction<TimeType>>;
 };
 
-export const Calendar = ({ value, setValue }: CalendarProps) => {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const daysofMonth = getAllDaysForMonth(
-    currentMonth.getMonth(),
-    currentMonth.getFullYear()
+export const Calendar = ({
+  value,
+  setValue,
+  setMonth,
+  setTime,
+  month,
+  daysofMonth,
+  isCurrentMonthDisplayed,
+}: CalendarProps) => {
+  const setFocusedStyles = useCallback(
+    (day: number) => {
+      const isPickedDate = value.day === day;
+      if (isCurrentMonthDisplayed && isPickedDate) {
+        return "bg-cCta-default w-[24px] h-[24px] mx-[7.71px] rounded-[50%] text-cText-secondary";
+      }
+      return "";
+    },
+    [isCurrentMonthDisplayed, value]
   );
-  //   console.log(daysofMonth);
   return (
     <div className="flex flex-col">
       Date
@@ -57,17 +42,17 @@ export const Calendar = ({ value, setValue }: CalendarProps) => {
             src={left_arrow}
             className="h-[16px]"
             onClick={() =>
-              setCurrentMonth(
+              setMonth(
                 (prev) => new Date(prev.getFullYear(), prev.getMonth() - 1)
               )
             }
           />
-          {currentMonth.toLocaleString("en", { month: "long" })}
+          {month.toLocaleString("en", { month: "long" })}
           <img
             src={right_arrow}
             className="h-[16px]"
             onClick={() =>
-              setCurrentMonth(
+              setMonth(
                 (prev) => new Date(prev.getFullYear(), prev.getMonth() + 1)
               )
             }
@@ -92,15 +77,22 @@ export const Calendar = ({ value, setValue }: CalendarProps) => {
                 }
                 return (
                   <span
-                    className="w-[39.42px] text-center text-fsMedium font-normal cursor-pointer"
+                    className={
+                      "w-[39.42px] text-center text-fsMedium font-normal cursor-pointer " +
+                      setFocusedStyles(day.getDate())
+                    }
                     key={day.getDate()}
-                    onClick={() =>
+                    onClick={() => {
+                      setTime({
+                        hour: null,
+                        minutes: null,
+                      });
                       setValue({
                         day: day.getDate(),
                         month: day.getMonth(),
                         year: day.getFullYear(),
-                      })
-                    }
+                      });
+                    }}
                   >
                     {day.getDate()}
                   </span>

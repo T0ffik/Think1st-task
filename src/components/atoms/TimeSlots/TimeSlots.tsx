@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { TimeType } from "../../molecules";
 
 type TimeSlotsProps = {
@@ -12,15 +12,18 @@ export const TimeSlots = ({
   setValue,
   currentValue,
 }: TimeSlotsProps) => {
-  const [isSelected, setIsSelected] = useState<boolean>(
-    value.hour === currentValue.hour && value.minutes === currentValue.minutes
-  );
+  const [isSelected, setIsSelected] = useState<boolean>(false);
   const getStyles = () => {
     if (isSelected) {
       return "border-[1px] border-cBorder-active";
     }
     return "border-[1px] border-cBorder-default";
   };
+  useEffect(() => {
+    setIsSelected(
+      value.hour === currentValue.hour && value.minutes === currentValue.minutes
+    );
+  }, [value, currentValue]);
 
   return (
     <div
