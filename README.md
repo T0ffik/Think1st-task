@@ -7,6 +7,7 @@
 - Run yarn install
 - Run yarn start
 - Open [http://localhost:5173](http://localhost:5173) to view it in your browser.
+- Also You can open [deploy](https://soft-baklava-1efb4c.netlify.app/) to view it in your browser.
 
 ## Main goals of app:
 - App display simple form
