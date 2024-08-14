@@ -34,3 +34,5 @@ export const RangeInput = ({ value, setValue }: RangeInputProps) => {
     </div>
   );
 };
+
+
