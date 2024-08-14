@@ -83,7 +83,10 @@ export const Form = () => {
   }, [formValues]);
 
   return (
-    <form className=" flex flex-col gap-[24px]" onSubmit={onSubmit}>
+    <form
+      className=" flex flex-col gap-[24px] mx-[24px] max-w-[426px] max-[475px]:max-w-[342px]"
+      onSubmit={onSubmit}
+    >
       <h2 className="text-fsExtraBig font-medium text-cText-primary">
         Personal info
       </h2>

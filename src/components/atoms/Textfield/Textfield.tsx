@@ -67,7 +67,7 @@ export const Textfield = ({
     return null;
   };
   return (
-    <div className=" flex flex-col min-w-[287px]">
+    <div className=" flex flex-col w-[100%]">
       <label>{label}</label>
       <input
         type={type}

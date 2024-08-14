@@ -17,18 +17,20 @@ type TimePickerProps = {
 
 export const TimePicker = ({ value, setValue }: TimePickerProps) => {
   return (
-    <div className="flex flex-col gap-[8px]">
-      Time
-      {timeSlots.map((slot) => {
-        return (
-          <TimeSlots
-            setValue={setValue}
-            currentValue={value}
-            value={slot}
-            key={`${slot.hour}:${slot.minutes || "00"}`}
-          />
-        );
-      })}
+    <div className="flex flex-col gap-[8px] ">
+      <label>Time</label>
+      <div className="flex flex-col gap-[8px] max-[475px]:flex-row max-[475px]:gap-[9px] max-[475px]:flex-wrap">
+        {timeSlots.map((slot) => {
+          return (
+            <TimeSlots
+              setValue={setValue}
+              currentValue={value}
+              value={slot}
+              key={`${slot.hour}:${slot.minutes || "00"}`}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };

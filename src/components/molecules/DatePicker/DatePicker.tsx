@@ -104,7 +104,7 @@ export const DatePicker = ({ setValue, holidays }: DatePickerProps) => {
     }
   }, [time, date]);
   return (
-    <div className=" flex justify-between">
+    <div className=" flex justify-between max-[475px]:flex-col max-[475px]:gap-[24px]">
       <Calendar
         value={date}
         setValue={setDate}
