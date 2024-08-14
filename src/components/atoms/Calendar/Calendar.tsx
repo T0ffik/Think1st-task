@@ -7,7 +7,7 @@ const days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 type CalendarProps = {
   value: DateType;
   month: Date;
-  daysofMonth: [Date[]];
+  daysofMonth: [(Date | null)[]];
   isCurrentMonthDisplayed: boolean;
   setValue: Dispatch<SetStateAction<DateType>>;
   setMonth: Dispatch<SetStateAction<Date>>;
@@ -37,7 +37,7 @@ export const Calendar = ({
     },
     [isCurrentMonthDisplayed]
   );
-  const renderDays = (day: Date) => {
+  const renderDays = (day: Date | null) => {
     if (day === null || day === undefined) {
       return <span className="w-[39.42px] text-center"></span>;
     }

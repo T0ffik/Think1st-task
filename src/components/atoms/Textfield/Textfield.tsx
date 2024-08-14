@@ -1,5 +1,12 @@
-import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { FormValues } from "../../organism";
+import ExclamationMark from "../../../images/Exclamation_Mark.svg?react";
 
 type TextfieldProps = {
   name: string;
@@ -7,6 +14,7 @@ type TextfieldProps = {
   value: string;
   type?: "email";
   setValue: Dispatch<SetStateAction<FormValues>>;
+  errorMessage?: string;
 };
 
 export const Textfield = ({
@@ -15,6 +23,7 @@ export const Textfield = ({
   setValue,
   name,
   value,
+  errorMessage,
 }: TextfieldProps) => {
   const [state, setState] = useState<"default" | "focus" | "error">("default");
   const defaultStyles = "border-[1px] border-cBorder-default";
@@ -32,6 +41,25 @@ export const Textfield = ({
         return defaultStyles;
     }
   }, [state]);
+
+  useEffect(() => {
+    if (errorMessage) {
+      setState("error");
+    } else {
+      setState("default");
+    }
+  }, [errorMessage]);
+  const renderError = () => {
+    if (errorMessage) {
+      return (
+        <div className=" flex mt-[9px] gap-[5px] items-center">
+          <ExclamationMark />
+          <span className=" text-fsSmall">{errorMessage}</span>
+        </div>
+      );
+    }
+    return null;
+  };
   return (
     <div className=" flex flex-col min-w-[287px]">
       <label>{label}</label>
@@ -50,6 +78,7 @@ export const Textfield = ({
           getStyles()
         }
       />
+      {renderError()}
     </div>
   );
 };

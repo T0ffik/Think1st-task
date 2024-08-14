@@ -18,6 +18,7 @@ export type holiday = {
 type DatePickerProps = {
   setValue: Dispatch<SetStateAction<FormValues>>;
   holidays: holiday[] | null;
+  errorMessage?: string;
 };
 
 export type DateType = {
@@ -37,13 +38,12 @@ const getAllDaysForMonth = (month: number, year: number) => {
     days.push(new Date(date));
     date.setDate(date.getDate() + 1);
   }
-  const array: [Date[]] = [[]];
+  const array: [(Date | null)[]] = [[]];
   let i = 0;
   days.forEach((day, index) => {
     const dayNumber = day.getDay() === 0 ? 6 : day.getDay() - 1;
     if (i === 0 && array[i].length === 0) {
       for (let j = 0; j < dayNumber; j++) {
-        //@ts-ignore
         array[i].push(null);
       }
     }
@@ -54,7 +54,6 @@ const getAllDaysForMonth = (month: number, year: number) => {
     }
     if (index + 1 === days.length && dayNumber !== 6) {
       for (let j = dayNumber; j < 6; j++) {
-        //@ts-ignore
         array[i].push(null);
       }
     }
@@ -83,10 +82,18 @@ export const DatePicker = ({ setValue, holidays }: DatePickerProps) => {
     );
   }, [currentMonth, date]);
   useEffect(() => {
-    setValue((prev) => ({
-      ...prev,
-      date: new Date(date.year, date.month, date.day, time.hour, time.minutes),
-    }));
+    if (date.year !== null && time.hour !== null) {
+      setValue((prev) => ({
+        ...prev,
+        date: new Date(
+          date.year,
+          date.month,
+          date.day,
+          time.hour,
+          time.minutes
+        ),
+      }));
+    }
   }, [time, date]);
   return (
     <div className=" flex justify-between">
