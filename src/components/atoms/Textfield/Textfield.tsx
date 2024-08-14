@@ -1,4 +1,5 @@
 import {
+  ChangeEvent,
   Dispatch,
   SetStateAction,
   useCallback,
@@ -29,6 +30,11 @@ export const Textfield = ({
   const defaultStyles = "border-[1px] border-cBorder-default";
   const errorStyles = "bg-cFiled-error border-[2px] border-cBorder-error";
   const focusStyles = "bg-cFiled-focus border-[2px] border-cBorder-active";
+
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.currentTarget.value;
+    setValue((prev) => ({ ...prev, [name]: newValue }));
+  };
 
   const getStyles = useCallback(() => {
     switch (state) {
@@ -66,10 +72,7 @@ export const Textfield = ({
       <input
         type={type}
         name={name}
-        onChange={(e) => {
-          const newValue = e.currentTarget.value;
-          setValue((prev) => ({ ...prev, [name]: newValue }));
-        }}
+        onChange={onChange}
         value={value}
         onFocus={() => setState("focus")}
         onBlur={() => setState("default")}

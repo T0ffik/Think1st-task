@@ -23,6 +23,7 @@ export const Form = () => {
     photo: "",
     date: null,
   });
+
   const validateEmail = () => {
     setEmailError("");
     Object.keys(formValues).forEach((value) => {
@@ -54,6 +55,18 @@ export const Form = () => {
     }
   };
 
+  const checkIfEveryValueIsSet = () => {
+    let emptyValuesCount = 0;
+    Object.keys(formValues).forEach((value) => {
+      if (!formValues[value as keyof FormValues]) {
+        ++emptyValuesCount;
+      }
+    });
+    if (emptyValuesCount === 0) {
+      setIsSubmitDisabled(false);
+    }
+  };
+
   useEffect(() => {
     fetch("https://api.api-ninjas.com/v1/holidays?country=PL&year=2024&type=", {
       headers: {
@@ -66,15 +79,7 @@ export const Form = () => {
   }, []);
 
   useEffect(() => {
-    let emptyValuesCount = 0;
-    Object.keys(formValues).forEach((value) => {
-      if (!formValues[value as keyof FormValues]) {
-        ++emptyValuesCount;
-      }
-    });
-    if (emptyValuesCount === 0) {
-      setIsSubmitDisabled(false);
-    }
+    checkIfEveryValueIsSet();
   }, [formValues]);
 
   return (

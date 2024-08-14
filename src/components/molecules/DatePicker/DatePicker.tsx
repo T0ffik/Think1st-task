@@ -38,60 +38,68 @@ const getAllDaysForMonth = (month: number, year: number) => {
     days.push(new Date(date));
     date.setDate(date.getDate() + 1);
   }
-  const array: [(Date | null)[]] = [[]];
+  const daysDividedIntoWeeks: [(Date | null)[]] = [[]];
   let i = 0;
   days.forEach((day, index) => {
     const dayNumber = day.getDay() === 0 ? 6 : day.getDay() - 1;
-    if (i === 0 && array[i].length === 0) {
+    if (i === 0 && daysDividedIntoWeeks[i].length === 0) {
       for (let j = 0; j < dayNumber; j++) {
-        array[i].push(null);
+        daysDividedIntoWeeks[i].push(null);
       }
     }
-    array[i][dayNumber] = day;
+    daysDividedIntoWeeks[i][dayNumber] = day;
     if (dayNumber === 6) {
       ++i;
-      array.push([]);
+      daysDividedIntoWeeks.push([]);
     }
     if (index + 1 === days.length && dayNumber !== 6) {
       for (let j = dayNumber; j < 6; j++) {
-        array[i].push(null);
+        daysDividedIntoWeeks[i].push(null);
       }
     }
   });
-  return array;
+  return daysDividedIntoWeeks;
 };
 
 export const DatePicker = ({ setValue, holidays }: DatePickerProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [isCurrentMonthDisplayed, setIsCurrentMonthDisplayed] = useState(true);
   const [date, setDate] = useState<DateType>({
-    day: null,
-    month: null,
     year: null,
+    month: null,
+    day: null,
   });
   const [time, setTime] = useState<TimeType>({ hour: null, minutes: null });
+
   const daysofMonth = getAllDaysForMonth(
     currentMonth.getMonth(),
     currentMonth.getFullYear()
   );
   const isDatePicked = date.day !== null;
+
   useEffect(() => {
     setIsCurrentMonthDisplayed(
       currentMonth.getMonth() === date.month &&
         currentMonth.getFullYear() === date.year
     );
   }, [currentMonth, date]);
+
   useEffect(() => {
-    if (date.year !== null && time.hour !== null) {
+    if (
+      date.year !== null &&
+      date.month !== null &&
+      date.day !== null &&
+      time.hour !== null &&
+      time.minutes !== null
+    ) {
+      const year = date.year;
+      const month = date.month;
+      const day = date.day;
+      const hour = time.hour;
+      const minutes = time.minutes;
       setValue((prev) => ({
         ...prev,
-        date: new Date(
-          date.year,
-          date.month,
-          date.day,
-          time.hour,
-          time.minutes
-        ),
+        date: new Date(year, month, day, hour, minutes),
       }));
     }
   }, [time, date]);

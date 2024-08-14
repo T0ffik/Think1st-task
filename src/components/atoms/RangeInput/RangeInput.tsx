@@ -1,8 +1,8 @@
-import { Dispatch, SetStateAction } from "react";
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import { ValueIndicator } from "../ValueIndicator";
 import { FormValues } from "../../organism";
 
-const MIN_VALUE = 8;
+export const MIN_VALUE = 8;
 const MAX_VALUE = 100;
 
 type RangeInputProps = {
@@ -11,6 +11,10 @@ type RangeInputProps = {
 };
 
 export const RangeInput = ({ value, setValue }: RangeInputProps) => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const newValue = Number(event.currentTarget.value);
+    setValue((prev) => ({ ...prev, age: newValue }));
+  };
   return (
     <div className=" w-[100%] relative mb-[30px]">
       <label>Age</label>
@@ -24,10 +28,7 @@ export const RangeInput = ({ value, setValue }: RangeInputProps) => {
         max={MAX_VALUE}
         className="w-[100%] bg-cBorder-default accent-cBorder-active h-[6px] [&::-webkit-slider-runnable-track]:shadow-none [&::-ms-track]:appearance-none rounded-[50em] outline-none p-[0] m-[0] cursor-pointer [&::-webkit-slider-thumb]"
         defaultValue={value}
-        onChange={(e) => {
-          const newValue = Number(e.currentTarget.value);
-          setValue((prev) => ({ ...prev, age: newValue }));
-        }}
+        onChange={onChange}
       />
       <ValueIndicator value={value.toString()} />
     </div>

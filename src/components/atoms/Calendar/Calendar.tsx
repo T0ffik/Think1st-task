@@ -37,6 +37,7 @@ export const Calendar = ({
     },
     [isCurrentMonthDisplayed]
   );
+
   const renderDays = (day: Date | null) => {
     if (day === null || day === undefined) {
       return <span className="w-[39.42px] text-center"></span>;
