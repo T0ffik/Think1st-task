@@ -1,30 +1,53 @@
-# React + TypeScript + Vite
+# Recruitment task
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## How to run app
 
-Currently, two official plugins are available:
+- You have to install yarn and Node at least 20.11.1 ver
+- Clone This repository
+- Run yarn install
+- Run yarn start
+- Open [http://localhost:5173](http://localhost:5173) to view it in your browser.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Main goals of app:
+- App display simple form
+- Submit form avaliable after all values are passed 
+- Validation of email input
+- Custom date picker and range input
 
-## Expanding the ESLint configuration
+## Technologies used:
+- Vite - create project
+- React - framework
+- Typescript - programming language
+- tailwindcss - styling library
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Available Scripts
 
-- Configure the top-level `parserOptions` property like this:
+In the project directory, you can run:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+### `yarn start`
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Runs the app.\
+Open [http://localhost:5173](http://localhost:5173) to view it in your browser.
+
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
+
+### `yarn build`
+
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+### `yarn lint`
+
+Run linter for project.
+
+### `yarn lint:fix`
+
+Fixing lint errors.
+
+### `yarn lint:debug`
+
+Debuging project by lint.
