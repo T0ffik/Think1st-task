@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { CTA, FileInput, RangeInput, Textfield } from "../../atoms";
+import { CTA, FileInput, MIN_VALUE, RangeInput, Textfield } from "../../atoms";
 import { DatePicker, holiday } from "../../molecules";
 
 export type FormValues = {
@@ -19,7 +19,7 @@ export const Form = () => {
     firstName: "",
     lastName: "",
     email: "",
-    age: 8,
+    age: MIN_VALUE,
     photo: "",
     date: null,
   });
@@ -64,6 +64,8 @@ export const Form = () => {
     });
     if (emptyValuesCount === 0) {
       setIsSubmitDisabled(false);
+    } else {
+      setIsSubmitDisabled(true);
     }
   };
 

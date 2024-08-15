@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Icon from "../../../images/Vector.svg?react";
+import Icon from "../../../assets/icons/Vector.svg?react";
 export const DeteleIcon = () => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   return (

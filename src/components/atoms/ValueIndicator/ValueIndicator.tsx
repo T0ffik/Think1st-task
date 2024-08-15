@@ -8,7 +8,7 @@ type ValueIndicatorProps = {
 export const ValueIndicator = ({ value }: ValueIndicatorProps) => {
   return (
     <div
-      className={`bg-[url('/indicator.png')] w-[37px] h-[31px] text-center pt-[6px] absolute text-cBorder-active ${
+      className={`bg-[url('/src/assets/images/indicator.png')] w-[37px] h-[31px] text-center pt-[6px] absolute text-cBorder-active ${
         positions[Number(value) - MIN_VALUE]
       } ${positionsMobile[Number(value) - MIN_VALUE]}`}
     >

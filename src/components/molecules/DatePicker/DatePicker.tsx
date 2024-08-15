@@ -1,7 +1,9 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { Calendar } from "../../atoms";
 import { TimePicker } from "../TimePicker";
 import { FormValues } from "../../organism";
+import { setDateValue } from "../../utils/setDateValue";
+import { getAllDaysForMonth } from "../../utils/getAllDaysForMonth";
 
 export type holidayType = "OBSERVANCE" | "NATIONAL_HOLIDAY" | "SEASON";
 
@@ -18,7 +20,6 @@ export type holiday = {
 type DatePickerProps = {
   setValue: Dispatch<SetStateAction<FormValues>>;
   holidays: holiday[] | null;
-  errorMessage?: string;
 };
 
 export type DateType = {
@@ -29,36 +30,6 @@ export type DateType = {
 export type TimeType = {
   hour: number | null;
   minutes: number | null;
-};
-
-const getAllDaysForMonth = (month: number, year: number) => {
-  const date = new Date(year, month, 1);
-  const days = [];
-  while (date.getMonth() === month) {
-    days.push(new Date(date));
-    date.setDate(date.getDate() + 1);
-  }
-  const daysDividedIntoWeeks: [(Date | null)[]] = [[]];
-  let i = 0;
-  days.forEach((day, index) => {
-    const dayNumber = day.getDay() === 0 ? 6 : day.getDay() - 1;
-    if (i === 0 && daysDividedIntoWeeks[i].length === 0) {
-      for (let j = 0; j < dayNumber; j++) {
-        daysDividedIntoWeeks[i].push(null);
-      }
-    }
-    daysDividedIntoWeeks[i][dayNumber] = day;
-    if (dayNumber === 6) {
-      ++i;
-      daysDividedIntoWeeks.push([]);
-    }
-    if (index + 1 === days.length && dayNumber !== 6) {
-      for (let j = dayNumber; j < 6; j++) {
-        daysDividedIntoWeeks[i].push(null);
-      }
-    }
-  });
-  return daysDividedIntoWeeks;
 };
 
 export const DatePicker = ({ setValue, holidays }: DatePickerProps) => {
@@ -75,7 +46,7 @@ export const DatePicker = ({ setValue, holidays }: DatePickerProps) => {
     currentMonth.getMonth(),
     currentMonth.getFullYear()
   );
-  const isDatePicked = date.day !== null;
+  const isDatePicked = useMemo(() => date.day !== null, [date]);
 
   useEffect(() => {
     setIsCurrentMonthDisplayed(
@@ -85,23 +56,7 @@ export const DatePicker = ({ setValue, holidays }: DatePickerProps) => {
   }, [currentMonth, date]);
 
   useEffect(() => {
-    if (
-      date.year !== null &&
-      date.month !== null &&
-      date.day !== null &&
-      time.hour !== null &&
-      time.minutes !== null
-    ) {
-      const year = date.year;
-      const month = date.month;
-      const day = date.day;
-      const hour = time.hour;
-      const minutes = time.minutes;
-      setValue((prev) => ({
-        ...prev,
-        date: new Date(year, month, day, hour, minutes),
-      }));
-    }
+    setDateValue(date, time, setValue);
   }, [time, date]);
   return (
     <div className=" flex justify-between max-[475px]:flex-col max-[475px]:gap-[24px]">

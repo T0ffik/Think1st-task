@@ -2,7 +2,6 @@ import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import { FormValues } from "../../organism";
 
 type FileInputProps = {
-  errorMessage?: string;
   setValue: Dispatch<SetStateAction<FormValues>>;
 };
 

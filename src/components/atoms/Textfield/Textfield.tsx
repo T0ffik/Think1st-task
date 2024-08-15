@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { FormValues } from "../../organism";
-import ExclamationMark from "../../../images/Exclamation_Mark.svg?react";
+import ExclamationMark from "../../../assets/icons/Exclamation_Mark.svg?react";
 
 type TextfieldProps = {
   name: string;
@@ -18,6 +18,10 @@ type TextfieldProps = {
   errorMessage?: string;
 };
 
+const defaultStyles = "border-[1px] border-cBorder-default";
+const errorStyles = "bg-cFiled-error border-[2px] border-cBorder-error";
+const focusStyles = "bg-cFiled-focus border-[2px] border-cBorder-active";
+
 export const Textfield = ({
   label,
   type,
@@ -27,14 +31,14 @@ export const Textfield = ({
   errorMessage,
 }: TextfieldProps) => {
   const [state, setState] = useState<"default" | "focus" | "error">("default");
-  const defaultStyles = "border-[1px] border-cBorder-default";
-  const errorStyles = "bg-cFiled-error border-[2px] border-cBorder-error";
-  const focusStyles = "bg-cFiled-focus border-[2px] border-cBorder-active";
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newValue = event.currentTarget.value;
-    setValue((prev) => ({ ...prev, [name]: newValue }));
-  };
+  const onChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.currentTarget.value;
+      setValue((prev) => ({ ...prev, [name]: newValue }));
+    },
+    [setValue, name]
+  );
 
   const getStyles = useCallback(() => {
     switch (state) {

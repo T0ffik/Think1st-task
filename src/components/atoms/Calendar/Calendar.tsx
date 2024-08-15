@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useCallback } from "react";
-import left_arrow from "../../../images/Left_Arrow.png";
-import right_arrow from "../../../images/Right_Arrow.png";
+import left_arrow from "../../../assets/images/Left_Arrow.png";
+import right_arrow from "../../../assets/images/Right_Arrow.png";
 import { DateType, holiday, TimeType } from "../../molecules";
 const days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 
@@ -37,6 +37,25 @@ export const Calendar = ({
     },
     [isCurrentMonthDisplayed]
   );
+
+  const renderDaysNames = () => {
+    return days.map((day) => (
+      <span
+        key={day}
+        className="text-fsSmall font-medium w-[39.42px] text-center"
+      >
+        {day}
+      </span>
+    ));
+  };
+
+  const renderWeeks = () => {
+    return daysofMonth.map((week) => (
+      <div className="flex justify-between mt-[9px]">
+        {week.map((day) => renderDays(day))}
+      </div>
+    ));
+  };
 
   const renderDays = (day: Date | null) => {
     if (day === null || day === undefined) {
@@ -109,22 +128,9 @@ export const Calendar = ({
           />
         </div>
         <div className="flex justify-between mt-[32px]">
-          {days.map((day) => (
-            <span
-              key={day}
-              className="text-fsSmall font-medium w-[39.42px] text-center"
-            >
-              {day}
-            </span>
-          ))}
+          {renderDaysNames()}
         </div>
-        <div className="flex flex-col">
-          {daysofMonth.map((week) => (
-            <div className="flex justify-between mt-[9px]">
-              {week.map((day) => renderDays(day))}
-            </div>
-          ))}
-        </div>
+        <div className="flex flex-col">{renderWeeks()}</div>
       </div>
     </div>
   );
