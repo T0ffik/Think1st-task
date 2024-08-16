@@ -1,20 +1,12 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
-import { FormValues } from "../../organism";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { FormValues, onChangeType } from "../../organism";
 import ExclamationMark from "../../../assets/icons/Exclamation_Mark.svg?react";
 
 type TextfieldProps = {
-  name: string;
+  name: keyof FormValues;
   label: string;
-  value: string;
   type?: "email";
-  setValue: Dispatch<SetStateAction<FormValues>>;
+  setValue: onChangeType;
   errorMessage?: string;
 };
 
@@ -27,7 +19,6 @@ export const Textfield = ({
   type,
   setValue,
   name,
-  value,
   errorMessage,
 }: TextfieldProps) => {
   const [state, setState] = useState<"default" | "focus" | "error">("default");
@@ -35,7 +26,7 @@ export const Textfield = ({
   const onChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const newValue = event.currentTarget.value;
-      setValue((prev) => ({ ...prev, [name]: newValue }));
+      setValue(newValue, name as keyof FormValues);
     },
     [setValue, name]
   );
@@ -77,7 +68,6 @@ export const Textfield = ({
         type={type}
         name={name}
         onChange={onChange}
-        value={value}
         onFocus={() => setState("focus")}
         onBlur={() => setState("default")}
         className={

@@ -1,14 +1,14 @@
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
-import { FormValues } from "../../organism";
+import { ChangeEvent } from "react";
+import { onChangeType } from "../../organism";
 
 type FileInputProps = {
-  setValue: Dispatch<SetStateAction<FormValues>>;
+  setValue: onChangeType;
 };
 
 export const FileInput = ({ setValue }: FileInputProps) => {
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.currentTarget.value;
-    setValue((prev) => ({ ...prev, photo: newValue }));
+    setValue(newValue, "photo");
   };
   return (
     <>

@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { CTA, FileInput, MIN_VALUE, RangeInput, Textfield } from "../../atoms";
 import { DatePicker, holiday } from "../../molecules";
 
@@ -11,25 +11,36 @@ export type FormValues = {
   date: Date | null;
 };
 
+type values = FormValues[keyof FormValues];
+
+export type onChangeType = (value: values, key: keyof FormValues) => void;
+
 export const Form = () => {
   const [holidays, setHolidays] = useState<holiday[] | null>(null);
   const [emailError, setEmailError] = useState<string>();
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-  const [formValues, setFormValues] = useState<FormValues>({
+  const formState = useRef<FormValues>({
     firstName: "",
     lastName: "",
     email: "",
+    date: null,
     age: MIN_VALUE,
     photo: "",
-    date: null,
   });
+
+  const onChange = useCallback<onChangeType>((value, key) => {
+    formState.current = { ...formState.current, [key]: value };
+    checkIfEveryValueIsSet();
+  }, []);
 
   const validateEmail = () => {
     setEmailError("");
-    Object.keys(formValues).forEach((value) => {
+    Object.keys(formState.current).forEach((value) => {
       if (
         value === "email" &&
-        !formValues[value].match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i)
+        !formState.current[value].match(
+          /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+        )
       ) {
         setEmailError("This is not a valid e-mail");
       }
@@ -42,7 +53,7 @@ export const Form = () => {
     if (!emailError) {
       fetch("http://letsworkout.pl/submit", {
         method: "POST",
-        body: JSON.stringify({ formData: formValues }),
+        body: JSON.stringify({ formData: formState.current }),
       })
         .then((res) => {
           if (res.ok) {
@@ -57,8 +68,8 @@ export const Form = () => {
 
   const checkIfEveryValueIsSet = () => {
     let emptyValuesCount = 0;
-    Object.keys(formValues).forEach((value) => {
-      if (!formValues[value as keyof FormValues]) {
+    Object.keys(formState.current).forEach((value) => {
+      if (!formState.current[value as keyof FormValues]) {
         ++emptyValuesCount;
       }
     });
@@ -80,10 +91,6 @@ export const Form = () => {
       .catch((error) => console.log(error));
   }, []);
 
-  useEffect(() => {
-    checkIfEveryValueIsSet();
-  }, [formValues]);
-
   return (
     <form
       className=" flex flex-col gap-[24px] mx-[24px] max-w-[426px] max-[475px]:max-w-[342px]"
@@ -92,31 +99,20 @@ export const Form = () => {
       <h2 className="text-fsExtraBig font-medium text-cText-primary">
         Personal info
       </h2>
-      <Textfield
-        name="firstName"
-        label="First Name"
-        value={formValues.firstName}
-        setValue={setFormValues}
-      />
-      <Textfield
-        name="lastName"
-        label="Last Name"
-        value={formValues.lastName}
-        setValue={setFormValues}
-      />
+      <Textfield name="firstName" label="First Name" setValue={onChange} />
+      <Textfield name="lastName" label="Last Name" setValue={onChange} />
       <Textfield
         name="email"
         label="Email Address"
-        value={formValues.email}
-        setValue={setFormValues}
+        setValue={onChange}
         errorMessage={emailError}
       />
-      <RangeInput value={formValues.age} setValue={setFormValues} />
-      <FileInput setValue={setFormValues} />
+      <RangeInput setValue={onChange} />
+      <FileInput setValue={onChange} />
       <h2 className="text-fsExtraBig font-medium text-cText-primary mt-[24px]">
         Your workout
       </h2>
-      <DatePicker setValue={setFormValues} holidays={holidays} />
+      <DatePicker holidays={holidays} onChange={onChange} />
       <CTA disabled={isSubmitDisabled}>Send Application</CTA>
     </form>
   );

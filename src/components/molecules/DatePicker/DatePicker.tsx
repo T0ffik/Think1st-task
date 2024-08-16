@@ -1,7 +1,7 @@
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Calendar } from "../../atoms";
 import { TimePicker } from "../TimePicker";
-import { FormValues } from "../../organism";
+import { onChangeType } from "../../organism";
 import { setDateValue } from "../../utils/setDateValue";
 import { getAllDaysForMonth } from "../../utils/getAllDaysForMonth";
 
@@ -18,8 +18,8 @@ export type holiday = {
 };
 
 type DatePickerProps = {
-  setValue: Dispatch<SetStateAction<FormValues>>;
   holidays: holiday[] | null;
+  onChange: onChangeType;
 };
 
 export type DateType = {
@@ -32,7 +32,7 @@ export type TimeType = {
   minutes: number | null;
 };
 
-export const DatePicker = ({ setValue, holidays }: DatePickerProps) => {
+export const DatePicker = ({ holidays, onChange }: DatePickerProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [isCurrentMonthDisplayed, setIsCurrentMonthDisplayed] = useState(true);
   const [date, setDate] = useState<DateType>({
@@ -56,7 +56,7 @@ export const DatePicker = ({ setValue, holidays }: DatePickerProps) => {
   }, [currentMonth, date]);
 
   useEffect(() => {
-    setDateValue(date, time, setValue);
+    setDateValue(date, time, onChange);
   }, [time, date]);
   return (
     <div className=" flex justify-between max-[475px]:flex-col max-[475px]:gap-[24px]">

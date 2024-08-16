@@ -1,11 +1,10 @@
-import { Dispatch, SetStateAction } from "react";
 import { DateType, TimeType } from "../molecules";
-import { FormValues } from "../organism";
+import { onChangeType } from "../organism";
 
 export const setDateValue = (
   date: DateType,
   time: TimeType,
-  setValue: Dispatch<SetStateAction<FormValues>>
+  setValue: onChangeType
 ) => {
   if (
     date.year !== null &&
@@ -19,9 +18,6 @@ export const setDateValue = (
     const day = date.day;
     const hour = time.hour;
     const minutes = time.minutes;
-    setValue((prev) => ({
-      ...prev,
-      date: new Date(year, month, day, hour, minutes),
-    }));
+    setValue(new Date(year, month, day, hour, minutes), "date");
   }
 };
